@@ -37,7 +37,7 @@ const AuthWrapper = ({ children }) => (
         <Box display={"flex"} gap={2}>
           <Logo />
 
-          <Typography variant="h4"> NavIcon</Typography>
+          <Typography variant="h4"> DOMS</Typography>
         </Box>
       </Grid>
       <Grid item xs={12}>
@@ -47,7 +47,9 @@ const AuthWrapper = ({ children }) => (
           container
           justifyContent="center"
           alignItems="center"
-          sx={{ minHeight: { xs: "calc(100vh - 134px)", md: "calc(100vh - 112px)" } }}
+          sx={{
+            minHeight: { xs: "calc(100vh - 134px)", md: "calc(100vh - 112px)" },
+          }}
         >
           <Grid item>
             <AuthCard>{children}</AuthCard>
