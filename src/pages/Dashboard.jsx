@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 
 const Dashboard = () => {
   return (
-    <Box>
+    <Box width="100%" p={1}>
       <HeadingNav
         navLinks={[
           {
