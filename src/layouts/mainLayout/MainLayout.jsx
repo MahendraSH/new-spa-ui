@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Navigate, Outlet  , useNavigate} from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 // material-ui
 import { Box, Toolbar, useMediaQuery } from "@mui/material";
@@ -16,7 +16,7 @@ const MainLayout = () => {
   const theme = useTheme();
   const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
   const dispatch = useDispatch();
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const { drawerOpen } = useSelector((state) => state.menu);
 
   const { componentDrawerOpen } = useSelector((state) => state.menu);
@@ -47,9 +47,9 @@ const navigate = useNavigate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchDownLG]);
 
-  useEffect(() => {
+  useMemo(() => {
     if (!token) {
-navigate("/login", { replace: true });
+      navigate("/login", { replace: true });
     }
   }, [token]);
   return (
@@ -62,13 +62,14 @@ navigate("/login", { replace: true });
           fullOpen={fullOpen}
           handleDrawerOnly={handleDrawerOnly}
         />
-         <Box
-          component='main'
+        <Box
+          component="main"
           sx={{
             width: `calc(100% - ${!fullOpen ? 40 : drawerWidth}px)`,
             flexGrow: 1,
             p: 1.5,
-          }}>
+          }}
+        >
           <Toolbar />
           <Outlet />
         </Box>
