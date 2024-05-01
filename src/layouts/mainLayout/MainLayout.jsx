@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 // material-ui
-import { Box, Toolbar, useMediaQuery } from "@mui/material";
+import { Box, Container, Toolbar, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import { openComponentDrawer, openDrawer } from "@/app/features/menuSlice";
@@ -10,12 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DrawerMainIndex from "./Drawer/DrawerMainIndex";
 import Header from "./Header/MainHeaderIndex";
+import { drawerWidth } from "@/config";
 
 const MainLayout = () => {
   const theme = useTheme();
   const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { drawerOpen } = useSelector((state) => state.menu);
 
   const { componentDrawerOpen } = useSelector((state) => state.menu);
@@ -46,9 +47,11 @@ const MainLayout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchDownLG]);
 
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
+  useMemo(() => {
+    if (!token) {
+      navigate("/login", { replace: true });
+    }
+  }, [token]);
   return (
     <div>
       <Box sx={{ display: "flex", width: "100%" }}>
@@ -59,18 +62,19 @@ const MainLayout = () => {
           fullOpen={fullOpen}
           handleDrawerOnly={handleDrawerOnly}
         />
-        <Box
+        <Container
           component="main"
-          sx={{
-            width: "100%",
-            flexGrow: 1,
-            p: { xs: 2, sm: 3 },
-            ml: matchDownLG ? 0 : 5,
-          }}
+          sx={
+            {
+              // width: `calc(100% - ${!fullOpen ? 80 : drawerWidth}px)`,
+              //flexGrow: 1,
+              //p: 2,
+            }
+          }
         >
           <Toolbar />
           <Outlet />
-        </Box>
+        </Container>
       </Box>
     </div>
   );
