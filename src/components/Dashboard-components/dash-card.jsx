@@ -26,7 +26,7 @@ const DashCard = ({ items }) => {
             lg: "repeat(4, 1fr)",
             xl: "repeat(4, 1fr)",
           },
-          gap: { xs: 2, sm: 2, md: 3, lg: 4, xl: 5 },
+          gap: 2,
         }}
       >
         {items.map((item) => (

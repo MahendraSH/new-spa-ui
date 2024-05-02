@@ -64,13 +64,7 @@ const MainLayout = () => {
         />
         <Container
           component="main"
-          sx={
-            {
-              // width: `calc(100% - ${!fullOpen ? 80 : drawerWidth}px)`,
-              //flexGrow: 1,
-              //p: 2,
-            }
-          }
+         
         >
           <Toolbar />
           <Outlet />

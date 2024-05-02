@@ -30,22 +30,9 @@
   {
     "id" : "data-management", 
   "title" : "Data Management", 
-  "type" : "submenu",
    "icon" : "ManageAccountsTwoTone",
-   "children" : [
-    {
-      "id": "data-object",
-      "title": "Data Object",
-      "type": "item",
-      "url": "/data-object"
-    },
-    {
-      "id": "data-repo",
-      "title": "Data Repository",
-      "type": "item",
-      "url": "/data-repo"
-    }
-   ]
+    "type" : "item",
+    "url" : "/data-management"
   },
   
   {
