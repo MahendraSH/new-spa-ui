@@ -1,5 +1,5 @@
 import HeadingNav from '@/components/heading-nav'
-import { AddOutlined, DeleteOutline, PlusOneOutlined } from '@mui/icons-material'
+import { AddOutlined, DeleteOutline } from '@mui/icons-material'
 import { Box, Button, Card, CardActionArea, CardContent, IconButton, Typography } from '@mui/material'
 
 const DataObjects = () => {
@@ -26,7 +26,7 @@ const DataObjects = () => {
         height: '100%',
         width: '100%',
         display:"grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
+        gridTemplateColumns:{ xs:"repeat(1, 1fr)", sm:"repeat(3, 1fr)", md:"repeat(3, 1fr), lg:repeat(4, 1fr) , xl:repeat(4, 1fr)"},
         pt: 2,
         gap: 2
     }}>
