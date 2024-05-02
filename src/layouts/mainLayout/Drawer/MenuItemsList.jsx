@@ -58,22 +58,9 @@ const data = `
   {
     "id" : "data-management", 
   "title" : "Data Management", 
-  "type" : "submenu",
-   "icon" : "DatasetOutlined",
-   "children" : [
-    {
-      "id": "data-object",
-      "title": "Data Object",
-      "type": "item",
-      "url": "/data-object"
-    },
-    {
-      "id": "data-repo",
-      "title": "Data Repository",
-      "type": "item",
-      "url": "/data-repo"
-    }
-   ]
+   "icon" : "ManageAccountsTwoTone",
+    "type" : "item",
+    "url" : "/data-management"
   },
   
   {
