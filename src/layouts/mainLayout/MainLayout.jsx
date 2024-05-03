@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 // material-ui
-import { Box, Container, Toolbar, useMediaQuery } from "@mui/material";
+import { Box, Toolbar, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import { openComponentDrawer, openDrawer } from "@/app/features/menuSlice";
@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DrawerMainIndex from "./Drawer/DrawerMainIndex";
 import Header from "./Header/MainHeaderIndex";
-import { drawerWidth } from "@/config";
 
 const MainLayout = () => {
   const theme = useTheme();
@@ -62,13 +61,23 @@ const MainLayout = () => {
           fullOpen={fullOpen}
           handleDrawerOnly={handleDrawerOnly}
         />
-        <Container
+        <Box
+        sx={{
+          p: 0,
+          mx: {lg: fullOpen ? "68px" : "40px", xs: "0px"},
+          width:"100%",
+          transition: theme.transitions.create("margin", {
+            easing: theme.transitions.easing.easeInOut,
+            duration: theme.transitions.duration.shorter,
+          }),
+        }}
           component="main"
+        
          
         >
           <Toolbar />
           <Outlet />
-        </Container>
+        </Box>
       </Box>
     </div>
   );
