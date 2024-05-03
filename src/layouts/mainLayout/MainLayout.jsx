@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 // material-ui
-import { Box, Toolbar, useMediaQuery } from "@mui/material";
+import { Box, Container, Toolbar, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import { openComponentDrawer, openDrawer } from "@/app/features/menuSlice";
@@ -61,7 +61,7 @@ const MainLayout = () => {
           fullOpen={fullOpen}
           handleDrawerOnly={handleDrawerOnly}
         />
-        <Box
+        {/* <Box
         sx={{
           p: 0,
           mx: {lg: fullOpen ? "68px" : "40px", xs: "0px"},
@@ -74,10 +74,12 @@ const MainLayout = () => {
           component="main"
         
          
-        >
+        > */}
+        <Container component="main" maxWidth="xl">
           <Toolbar />
           <Outlet />
-        </Box>
+        </Container>
+        {/* </Box> */}
       </Box>
     </div>
   );
