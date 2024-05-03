@@ -13,13 +13,14 @@ import { setAuthToken } from "./app/features/auth-token-slice";
 import DataObjects from "./pages/management/Data/DataObjects";
 import UserEditCreatePage from "./pages/management/users/UserEditCreatePage";
 import Users from "./pages/management/users/Users";
+import DataObjectAddColumns from "./pages/management/Data/DataObjectAddColumns";
 
 const App = () => {
   const token = Cookies.get("authToken");
   const dispatch = useDispatch();
   useMemo(() => {
-    dispatch(setAuthToken( token ));
-  }, [token])
+    dispatch(setAuthToken(token));
+  }, [token]);
   return (
     <>
       <Routes>
@@ -28,7 +29,11 @@ const App = () => {
           <Route path="dash" element={<Dashboard />} />
           <Route path="/users" element={<Users />} />
           <Route path="/users/:id" element={<UserEditCreatePage />} />
-         <Route path="/data-management" element={<DataObjects />} />
+          <Route path="/data-management" element={<DataObjects />} />
+          <Route
+            path="data-management/:objectId"
+            element={<DataObjectAddColumns />}
+          />
           <Route path="sample-page" element={<SamplePage />} />
           <Route path="*" element={<DemoPage />} />
         </Route>
