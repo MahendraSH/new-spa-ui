@@ -1,6 +1,14 @@
+import React, { useState } from "react";
 import AddDataObjectDialog from "@/components/Dashboard-components/data-comp/add-data-object-dialog";
 import HeadingNav from "@/components/heading-nav";
-import { AddOutlined, DeleteOutline, EditOutlined } from "@mui/icons-material";
+import {
+  AddOutlined,
+  DeleteOutline,
+  EditOutlined,
+  HorizontalRuleTwoTone,
+  MoreHoriz,
+  VisibilityOutlined,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -9,10 +17,23 @@ import {
   Typography,
   IconButton,
   Badge,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import CardObjectData from "@/components/Managment-components/data/card-data-object";
 
 const DataObjects = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Box>
       <HeadingNav
@@ -47,123 +68,13 @@ const DataObjects = () => {
         }}
       >
         {/* Card */}
-
-        <Card>
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "between",
-                alignItems: "center",
-                gap: 3,
-              }}
-            >
-              <Typography variant="h5">Role</Typography>
-              <Badge
-                badgeContent={10}
-                color="primary"
-                sx={{
-                  ml: "auto",
-                }}
-              ></Badge>{" "}
-            </Box>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure,
-            ratione alias. Soluta alias nemo necessitatibus illum amet
-          </CardContent>
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "start",
-              alignItems: "center",
-            }}
-          >
-            <Button startIcon={<EditOutlined />} variant="text" size="small">
-              Edit
-            </Button>
-            <Button> view</Button>
-            <Link to={`/data-management/${"role"}`}>
-              <Button
-                startIcon={<AddOutlined />}
-                variant="outlined"
-                size="small"
-              >
-                {" "}
-                add column
-              </Button>
-            </Link>
-            <IconButton
-              color="error"
-              sx={{
-                ml: "auto",
-              }}
-            >
-              {" "}
-              <DeleteOutline />{" "}
-            </IconButton>
-          </Box>
-        </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h5">Data Object Name</Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure,
-            ratione alias. Soluta alias nemo necessitatibus illum amet
-          </CardContent>
-          <Box>
-            <Button>Edit</Button>
-          </Box>
-        </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h5">Data Object Name</Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure,
-            ratione alias. Soluta alias nemo necessitatibus illum amet
-          </CardContent>
-          <Box>
-            <Button>Edit</Button>
-          </Box>
-        </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h5">Data Object Name</Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure,
-            ratione alias. Soluta alias nemo necessitatibus illum amet
-          </CardContent>
-          <Box>
-            <Button>Edit</Button>
-          </Box>
-        </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h5">Data Object Name</Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure,
-            ratione alias. Soluta alias nemo necessitatibus illum amet
-          </CardContent>
-          <Box>
-            <Button>Edit</Button>
-          </Box>
-        </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h5">Data Object Name</Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure,
-            ratione alias. Soluta alias nemo necessitatibus illum amet
-          </CardContent>
-          <Box>
-            <Button>Edit</Button>
-          </Box>
-        </Card>
-        <Card>
-          <CardContent>
-            <Typography variant="h5">Data Object Name</Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure,
-            ratione alias. Soluta alias nemo necessitatibus illum amet
-          </CardContent>
-          <Box>
-            <Button>Edit</Button>
-          </Box>
-        </Card>
+        <CardObjectData title="Role" description="Role Description" id="role" />
+        <CardObjectData title="demo" description="demo Description" id="demo" />
+        <CardObjectData
+          title="Demo E"
+          description="Demo E Description"
+          id="demo_e"
+        />
       </Box>
     </Box>
   );

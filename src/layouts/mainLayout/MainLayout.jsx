@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 // material-ui
 import { Box, Container, Toolbar, useMediaQuery } from "@mui/material";
@@ -16,6 +16,7 @@ const MainLayout = () => {
   const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
   const { drawerOpen } = useSelector((state) => state.menu);
 
   const { componentDrawerOpen } = useSelector((state) => state.menu);
@@ -34,19 +35,11 @@ const MainLayout = () => {
   };
 
   const handleDrawerOnly = () => {
-    setOpen(!open);
-    dispatch(openDrawer({ drawerOpen: !open }));
+    setOpen(false);
+    dispatch(openDrawer({ drawerOpen: false }));
   };
 
-  // set media wise responsive drawer
   useEffect(() => {
-    setOpen(!matchDownLG);
-    dispatch(openDrawer({ drawerOpen: !matchDownLG }));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matchDownLG]);
-
-  useMemo(() => {
     if (!token) {
       navigate("/login", { replace: true });
     }
