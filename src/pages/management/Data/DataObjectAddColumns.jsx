@@ -1,5 +1,8 @@
 // Import all necessary modules and icons
-import { useGetAdminObjectQuery } from "@/app/features/admin-apis/admin-object-api-slice";
+import {
+  useGetAdminObjectQuery,
+  useUpdateAdminObjectMutation,
+} from "@/app/features/admin-apis/admin-object-api-slice";
 import HeadingNav from "@/components/heading-nav";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -7,7 +10,6 @@ import {
   Box,
   Button,
   Card,
-  Checkbox,
   FormControl,
   FormControlLabel,
   Grid,
@@ -17,10 +19,11 @@ import {
   Select,
   Switch,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Field, FieldArray, Form, Formik, getIn } from "formik";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import * as yup from "yup";
 
@@ -38,7 +41,6 @@ const validationSchema = yup.object({
       minLength: yup.number(),
       maxLength: yup.number(),
       pattern: yup.string(),
-    
     }),
   ),
 });
@@ -129,15 +131,39 @@ const typeOptions = [
 // The main component
 const DataObjectAddColumns = () => {
   const objectId = useParams().objectId;
-  const { data, isLoading, isError, isSuccess } =
+  const { data, isLoading, isError, isSuccess, error } =
     useGetAdminObjectQuery(objectId);
+  const [updateAdminObject] = useUpdateAdminObjectMutation();
   // The function for handling form submission will likely involve an API call
-  const handleFormSubmission = (values, { setSubmitting }) => {
+  const handleFormSubmission = async (values, { setSubmitting }) => {
     console.log(values);
+    // chage values to key value pair
+    // key is property name and value is the properties
+    const properties = {};
+    values.properties.forEach((property) => {
+      properties[property.propertyName] = property;
+    });
+    console.log(properties);
+
+    const obj = { ...data };
+    obj.properties = properties;
+    await updateAdminObject({ obj, id: objectId })
+      .unwrap()
+      .then(() => toast.success("Object properties Updated Successfully"))
+      .catch((error) => toast.error(error.data.message || error.data.error));
     setSubmitting(false);
   };
-  // Define the initial form values
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    toast.error(
+      error.data.message || error.data.error || "Something went wrong",
+    );
+    return <div>Error</div>;
+  }
   if (isSuccess) {
     const initialValues = {
       properties: Object.entries(data?.properties || {}).map(
@@ -230,7 +256,6 @@ const DataObjectAddColumns = () => {
                                     label="Description"
                                     fullWidth
                                     as={TextField}
-                                  
                                     error={Boolean(
                                       getIn(
                                         errors,
@@ -440,13 +465,10 @@ const DataObjectAddColumns = () => {
                                       getIn(
                                         touched,
                                         `properties.${index}.maxLength`,
-                                      ) 
-
+                                      )
                                     }
                                   />
                                 </Grid>
-
-
 
                                 {/* Continue with other form fields */}
 
@@ -509,10 +531,23 @@ const DataObjectAddColumns = () => {
                   ...value,
                 }),
               )}
+              initialState={{
+                pageSize: 5,
+                pagination: {
+                  paginationModel: {
+                    pageSize: 5,
+                  },
+                },
+              }}
               columns={columns}
               pageSize={5}
-              rowsPerPageOptions={[5]}
+              rowsPerPageOptions={[5, 10, 25]}
               disableSelectionOnClick
+              disableColumnFilter
+              disableColumnMenu
+              disableDensitySelector
+              autoHeight
+              sx={{ my: 2 }}
             />
           </Box>
         </Box>
