@@ -1,18 +1,4 @@
 // CardObjectData.js
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  IconButton,
-  Badge,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-import { Link } from "react-router-dom";
 import {
   AddOutlined,
   DeleteOutline,
@@ -20,8 +6,23 @@ import {
   MoreHoriz,
   VisibilityOutlined,
 } from "@mui/icons-material";
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const CardObjectData = ({ title, description, id }) => {
+const CardObjectData = ({ title, description, id, count }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuClick = (event) => {
@@ -46,10 +47,15 @@ const CardObjectData = ({ title, description, id }) => {
         >
           <Typography variant="h5">{title}</Typography>
           <Badge
-            badgeContent={10}
+            badgeContent={count}
             color="primary"
             sx={{
               ml: "auto",
+              "& .MuiBadge-badge": {
+                fontSize: "1rem",
+                fontWeight: 600,
+                p: 1,
+              },
             }}
           ></Badge>{" "}
         </Box>
@@ -84,7 +90,7 @@ const CardObjectData = ({ title, description, id }) => {
               component={Link}
               to={`/data-management/${id}/repo`}
             >
-              view data
+              View Repository
             </Button>
           </MenuItem>
           <MenuItem>
@@ -95,17 +101,21 @@ const CardObjectData = ({ title, description, id }) => {
               color="primary"
               startIcon={<AddOutlined />}
             >
-              Add Column
+              Add Fields
             </Button>
           </MenuItem>
         </Menu>
         <Box marginLeft={"auto"}>
-          <IconButton color="primary">
-            <EditOutlined />
-          </IconButton>
-          <IconButton color="error">
-            <DeleteOutline />{" "}
-          </IconButton>
+          <Tooltip title="Edit">
+            <IconButton color="primary">
+              <EditOutlined />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton color="error">
+              <DeleteOutline />{" "}
+            </IconButton>
+          </Tooltip>
         </Box>
       </Box>
     </Card>
@@ -116,6 +126,7 @@ CardObjectData.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  count: PropTypes.number,
 };
 
 export default CardObjectData;

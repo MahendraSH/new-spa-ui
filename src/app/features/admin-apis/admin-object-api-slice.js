@@ -19,6 +19,12 @@ const adminObjectApiSlice = createApi({
   reducerPath: "adminObjectApi",
   tagTypes: ["adminObjectApi"],
   endpoints: (builder) => ({
+    getAllAdminObjects: builder.query({
+      query: ({ search }) => ({
+        url: search ? `?search=${search}` : "/",
+        method: "GET",
+      }),
+    }),
     getAdminObject: builder.query({
       query: (id) => ({
         url: `/${id}`,
@@ -52,6 +58,7 @@ const adminObjectApiSlice = createApi({
 });
 
 export const {
+  useGetAllAdminObjectsQuery,
   useGetAdminObjectQuery,
   useCreateAdminObjectMutation,
   useUpdateAdminObjectMutation,
