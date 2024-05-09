@@ -6,10 +6,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   FormLabel,
   Paper,
+  TextareaAutosize,
   TextField,
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
@@ -31,7 +31,7 @@ const AddDataObjectDialog = () => {
       .string()
       .matches(
         /^[A-Za-z0-9_ ]*$/,
-        "Title must be alphanumeric, can include underscores and spaces",
+        "Title must be alphanumeric, can include underscores and spaces"
       )
       .min(3, "Title must be at least 3 characters")
       .max(64, "Tile must be at most 64 characters")
@@ -43,15 +43,17 @@ const AddDataObjectDialog = () => {
       .max(400, "Description must be at most 400 characters"),
     entity: yup.string().required("Entity is required"),
     version: yup.number().required("Version is required"),
+    shortName: yup.string().required("Short Name is required").min(3).max(4),
   });
 
   // ... rest of your component
 
-  const intialData = {
+  const initialData = {
     title: "",
     description: "",
     entity: "",
     version: 1,
+    shortName: "",
   };
   return (
     <div>
@@ -69,21 +71,63 @@ const AddDataObjectDialog = () => {
             p: 2,
           }}
         >
-          <DialogContentText>Add Data Object here</DialogContentText>
-
           <Formik
-            initialValues={intialData}
+            initialValues={initialData}
             validationSchema={validationSchema}
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
-
-              await createAdminObject({ ...values, type: "object" })
+              //               console.log(values);
+              const { title, description, entity, version, shortName } = values;
+              //        "entity": {
+              //     "description": "The object entity name",
+              //     "enum": [
+              //         "user"
+              //     ],
+              //     "short_name": "user",
+              //     "uniquekey": "user_id",
+              //     "display_ui": false
+              // },
+              // "user_id": {
+              //     "description": "The unique identifier of the user object",
+              //     "type": "string",
+              //     "pattern": "[a-zA-Z0-9_-]*$",
+              //     "minLength": 5,
+              //     "maxLength": 20,
+              //     "searchable": true,
+              //     "display_ui": true
+              // },
+              const object = {
+                title,
+                description,
+                entity,
+                version,
+                type: "object",
+                properties: {
+                  entity: {
+                    description: "The object entity name",
+                    enum: [entity],
+                    short_name: shortName,
+                    uniquekey: `${entity}_id`,
+                    display_ui: false,
+                  },
+                  [`${entity}_id`]: {
+                    description: "The unique identifier of the object",
+                    type: "string",
+                    pattern: "[a-zA-Z0-9_-]*$",
+                    minLength: 5,
+                    maxLength: 20,
+                    searchable: true,
+                    display_ui: true,
+                  },
+                },
+              };
+              await createAdminObject(object)
                 .unwrap()
                 .then((data) => toast.success(data.message))
                 .catch((error) =>
                   toast.error(
-                    error.data.message || error.error || "Something went wrong",
-                  ),
+                    error.data.message || error.error || "Something went wrong"
+                  )
                 );
               handleClose();
               setSubmitting(false);
@@ -106,56 +150,113 @@ const AddDataObjectDialog = () => {
                   width={"100%"}
                   component={Paper}
                 >
-                  <FormLabel>Title</FormLabel>
-                  <Field
-                    as={TextField}
-                    name="title"
-                    onChange={(e) => {
-                      handleChange(e);
-                      setFieldValue(
-                        "entity",
-                        e.target.value.split(" ").join("_"),
-                      );
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: 3,
+                      alignItems: "center",
                     }}
-                    onBlur={handleBlur}
-                    value={values.title}
-                    error={Boolean(errors.title && touched.title)}
-                    helperText={touched.title && errors.title}
-                    fullWidth
-                  />
-                  <FormLabel>Description</FormLabel>
+                  >
+                    <Box width={"50%"}>
+                      <FormLabel
+                        sx={{
+                          color: "text.primary",
+                        }}
+                      >
+                        Title
+                      </FormLabel>
+                      <Field
+                        as={TextField}
+                        name="title"
+                        onChange={(e) => {
+                          handleChange(e);
+                          setFieldValue(
+                            "entity",
+                            e.target.value.toLowerCase().split(" ").join("_")
+                          );
+                        }}
+                        onBlur={handleBlur}
+                        value={values.title}
+                        error={Boolean(errors.title && touched.title)}
+                        helperText={touched.title && errors.title}
+                        fullWidth
+                      />
+                    </Box>
+                    <Box width={"50%"}>
+                      <FormLabel>Entity </FormLabel>
+                      <Field
+                        as={TextField}
+                        name="entity"
+                        onChange={handleChange}
+                        disabled
+                        onBlur={handleBlur}
+                        value={values.entity}
+                        error={Boolean(errors.entity && touched.entity)}
+                        helperText={touched.entity && errors.entity}
+                        fullWidth
+                      />
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: 3,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box width={"50%"}>
+                      <FormLabel
+                        sx={{
+                          color: "text.primary",
+                        }}
+                      >
+                        Short Name{" "}
+                      </FormLabel>
+                      <Field
+                        as={TextField}
+                        name="shortName"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.shortName}
+                        error={Boolean(errors.shortName && touched.shortName)}
+                        helperText={touched.shortName && errors.shortName}
+                        fullWidth
+                      />
+                    </Box>
+                    <Box width={"50%"}>
+                      <FormLabel>Version </FormLabel>
+                      <Field
+                        as={TextField}
+                        name="version"
+                        onChange={handleChange}
+                        disabled
+                        onBlur={handleBlur}
+                        value={values.version}
+                        error={Boolean(errors.version && touched.version)}
+                        helperText={touched.version && errors.version}
+                        fullWidth
+                      />
+                    </Box>
+                  </Box>
+                  <FormLabel
+                    sx={{
+                      color: "text.primary",
+                    }}
+                  >
+                    Description
+                  </FormLabel>
                   <Field
-                    as={TextField}
+                    as={TextareaAutosize}
+                    minRows={5}
                     name="description"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.description}
                     error={Boolean(errors.description && touched.description)}
                     helperText={touched.description && errors.description}
-                    fullWidth
-                  />
-                  <FormLabel>Entity </FormLabel>
-                  <Field
-                    as={TextField}
-                    name="entity"
-                    onChange={handleChange}
-                    disabled
-                    onBlur={handleBlur}
-                    value={values.entity}
-                    error={Boolean(errors.entity && touched.entity)}
-                    helperText={touched.entity && errors.entity}
-                    fullWidth
-                  />
-                  <FormLabel>Version </FormLabel>
-                  <Field
-                    as={TextField}
-                    name="version"
-                    onChange={handleChange}
-                    disabled
-                    onBlur={handleBlur}
-                    value={values.version}
-                    error={Boolean(errors.version && touched.version)}
-                    helperText={touched.version && errors.version}
                     fullWidth
                   />
                 </Box>
