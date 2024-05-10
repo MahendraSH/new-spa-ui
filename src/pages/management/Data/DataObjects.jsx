@@ -1,9 +1,9 @@
 import { useGetAllAdminObjectsQuery } from "@/app/features/admin-apis/admin-object-api-slice";
-import AddDataObjectDialog from "@/components/Dashboard-components/data-comp/add-data-object-dialog";
+import AddDataObjectDialog from "@/components/Management-components/data/add-data-object-dialog";
 import HeadingNav from "@/components/heading-nav";
-import CardObjectData from "@/components/Managment-components/data/card-data-object";
+import CardObjectData from "@/components/Management-components/data/card-data-object";
 import { SearchOutlined } from "@mui/icons-material";
-import { Box, IconButton, Input, TextField, Typography } from "@mui/material";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
 const DataObjects = () => {
@@ -38,7 +38,13 @@ const DataObjects = () => {
           }}
         >
           <Typography variant="h4">Data Objects</Typography>
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              flexDirection: { xs: "column", sm: "row" },
+            }}
+          >
             {/* search box with  search button and onClick  set searchParams with search */}
 
             <form
@@ -87,6 +93,7 @@ const DataObjects = () => {
               description={obj.description}
               id={obj.entity}
               count={obj.repository_count}
+              shortName={obj?.properties?.entity?.short_name || ""}
             />
           ))}
         </Box>
