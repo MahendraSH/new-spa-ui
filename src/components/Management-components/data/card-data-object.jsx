@@ -1,7 +1,6 @@
 // CardObjectData.js
 import {
   AddOutlined,
-  DeleteOutline,
   MoreHoriz,
   VisibilityOutlined,
 } from "@mui/icons-material";
@@ -14,14 +13,13 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import EditDataObjectDialog from "./edit-data-object-dialog";
 import DeleteDataObjectDialog from "./delete-data-object-dialog";
+import EditDataObjectDialog from "./edit-data-object-dialog";
 
 const CardObjectData = ({ title, description, id, count, shortName }) => {
   const [anchorEl, setAnchorEl] = useState(null);
