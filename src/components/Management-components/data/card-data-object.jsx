@@ -2,7 +2,6 @@
 import {
   AddOutlined,
   DeleteOutline,
-  EditOutlined,
   MoreHoriz,
   VisibilityOutlined,
 } from "@mui/icons-material";
@@ -21,8 +20,10 @@ import {
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import EditDataObjectDialog from "./edit-data-object-dialog";
+import DeleteDataObjectDialog from "./delete-data-object-dialog";
 
-const CardObjectData = ({ title, description, id, count }) => {
+const CardObjectData = ({ title, description, id, count, shortName }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuClick = (event) => {
@@ -105,17 +106,17 @@ const CardObjectData = ({ title, description, id, count }) => {
             </Button>
           </MenuItem>
         </Menu>
-        <Box marginLeft={"auto"}>
-          <Tooltip title="Edit">
-            <IconButton color="primary">
-              <EditOutlined />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <IconButton color="error">
-              <DeleteOutline />{" "}
-            </IconButton>
-          </Tooltip>
+        <Box marginLeft={"auto"} sx={{ display: "flex", gap: 1 }}>
+          <EditDataObjectDialog
+            initialData={{
+              title,
+              description,
+              entity: id,
+              version: 1,
+              shortName: shortName,
+            }}
+          />
+          <DeleteDataObjectDialog id={id} />
         </Box>
       </Box>
     </Card>
@@ -127,6 +128,7 @@ CardObjectData.propTypes = {
   description: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   count: PropTypes.number,
+  shortName: PropTypes.string,
 };
 
 export default CardObjectData;

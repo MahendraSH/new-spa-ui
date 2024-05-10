@@ -24,12 +24,14 @@ const adminObjectApiSlice = createApi({
         url: search ? `?search=${search}` : "/",
         method: "GET",
       }),
+      providesTags: ["adminObjectApi"],
     }),
     getAdminObject: builder.query({
       query: (id) => ({
         url: `/${id}`,
         method: "GET",
       }),
+      providesTags: ["adminObjectApi"],
     }),
 
     createAdminObject: builder.mutation({
@@ -38,21 +40,25 @@ const adminObjectApiSlice = createApi({
         method: "POST",
         body: adminObject,
       }),
+      invalidatesTags: ["adminObjectApi"],
     }),
 
     updateAdminObject: builder.mutation({
-      query: ({ adminObject, id }) => ({
-        url: `/${id}`,
+      query: (adminObject) => ({
+        url: `/`,
         method: "PUT",
         body: adminObject,
       }),
+      invalidatesTags: ["adminObjectApi"],
     }),
 
     deleteAdminObject: builder.mutation({
       query: (id) => ({
         url: `/${id}`,
         method: "DELETE",
+
       }),
+      invalidatesTags: ["adminObjectApi"],
     }),
   }),
 });
