@@ -9,14 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DrawerMainIndex from "./Drawer/DrawerMainIndex";
 import Header from "./Header/MainHeaderIndex";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const MainLayout = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { drawerOpen } = useSelector((state) => state.menu);
 
   const { componentDrawerOpen } = useSelector((state) => state.menu);
-  const token = useSelector((state) => state.auth.authToken);
+  const navigate = useNavigate();
+  const { user, loginWithRedirect } = useAuth0();
+  // const token = useSelector((state) => state.auth.authToken);
 
   // drawer toggler
   const [open, setOpen] = useState(drawerOpen);
@@ -35,11 +37,16 @@ const MainLayout = () => {
     dispatch(openDrawer({ drawerOpen: false }));
   };
 
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/login", { replace: true });
+  //   }
+  // }, [navigate, token]);
   useEffect(() => {
-    if (!token) {
-      navigate("/login", { replace: true });
+    if (!user) {
+      loginWithRedirect();
     }
-  }, [navigate, token]);
+  }, [navigate, user]);
   return (
     <div>
       <Box sx={{ display: "flex", width: "100%" }}>
