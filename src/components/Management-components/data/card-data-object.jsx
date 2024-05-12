@@ -1,9 +1,5 @@
 // CardObjectData.js
-import {
-  AddOutlined,
-  MoreHoriz,
-  VisibilityOutlined,
-} from "@mui/icons-material";
+import { MoreHoriz, VisibilityOutlined } from "@mui/icons-material";
 import {
   Badge,
   Box,
@@ -98,22 +94,13 @@ const CardObjectData = ({ title, description, id, count, shortName }) => {
               to={`/data-management/${id}`}
               variant="text"
               color="primary"
-              startIcon={<AddOutlined />}
             >
-              Add Fields
+              Attributes
             </Button>
           </MenuItem>
         </Menu>
         <Box marginLeft={"auto"} sx={{ display: "flex", gap: 1 }}>
-          <EditDataObjectDialog
-            initialData={{
-              title,
-              description,
-              entity: id,
-              version: 1,
-              shortName: shortName,
-            }}
-          />
+          <EditDataObjectDialog id={id} />
           <DeleteDataObjectDialog id={id} />
         </Box>
       </Box>
