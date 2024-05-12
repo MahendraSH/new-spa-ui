@@ -1,10 +1,9 @@
-import { EditOutlined } from "@mui/icons-material";
+import { LinkOutlined } from "@mui/icons-material";
 import {
   Box,
   Button,
   Drawer,
   FormLabel,
-  IconButton,
   MenuItem,
   Paper,
   Select,
@@ -62,9 +61,16 @@ const EditColumnsDrawerActions = ({
   return (
     <>
       <Tooltip title="Edit Columns">
-        <IconButton onClick={handleOpen}>
-          <EditOutlined />
-        </IconButton>
+        {/* <IconButton onClick={handleOpen}>
+              <Link />
+        </IconButton> */}
+        <Button
+          onClick={handleOpen}
+          endIcon={<LinkOutlined />}
+          sx={{ ":hover": { textDecoration: "underline" } }}
+        >
+          {propertyName}
+        </Button>
       </Tooltip>
 
       <Drawer anchor="right" open={open} onClose={handleClose}>
