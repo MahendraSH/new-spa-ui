@@ -11,28 +11,27 @@ import App from "./App.jsx";
 import store from "./app/store.js";
 import "./index.css";
 
+import { Auth0Provider } from "@auth0/auth0-react";
 import ScrollTop from "./hooks/scroll-to-top";
 import CustomThemeProvider from "./theme/custom-theme-provider.jsx";
-import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
-import Loader from "./components/Loader.jsx";
 
 const domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 
 export const RootComponent = () => {
-  const { isLoading } = useAuth0();
-
   return (
     <Auth0Provider
       domain={domain}
       clientId={clientId}
-      redirectUri={window.location.origin}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
     >
       <Provider store={store}>
         <BrowserRouter basename="/">
           <CustomThemeProvider>
             <ScrollTop>
-              {isLoading ? <Loader /> : <App />}
+              <App />
               <Toaster
                 position="bottom-center"
                 gutter={5}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 // material-ui
 import { Box, Container, Toolbar } from "@mui/material";
@@ -7,22 +7,24 @@ import { Box, Container, Toolbar } from "@mui/material";
 import { openComponentDrawer, openDrawer } from "@/app/features/menuSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+import Loader from "@/components/Loader";
+import { useAuth0 } from "@auth0/auth0-react";
 import DrawerMainIndex from "./Drawer/DrawerMainIndex";
 import Header from "./Header/MainHeaderIndex";
-import { useAuth0 } from "@auth0/auth0-react";
 
 const MainLayout = () => {
   const dispatch = useDispatch();
   const { drawerOpen } = useSelector((state) => state.menu);
 
   const { componentDrawerOpen } = useSelector((state) => state.menu);
-  const navigate = useNavigate();
-  const { user, loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+
+  const [open, setOpen] = useState(drawerOpen);
+  const [fullOpen, setFullOpen] = useState(componentDrawerOpen);
+
   // const token = useSelector((state) => state.auth.authToken);
 
   // drawer toggler
-  const [open, setOpen] = useState(drawerOpen);
-  const [fullOpen, setFullOpen] = useState(componentDrawerOpen);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -43,10 +45,13 @@ const MainLayout = () => {
   //   }
   // }, [navigate, token]);
   useEffect(() => {
-    if (!user) {
+    if (!isAuthenticated && !isLoading) {
       loginWithRedirect();
     }
-  }, [navigate, user]);
+  }, [isAuthenticated, isLoading]);
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div>
       <Box sx={{ display: "flex", width: "100%" }}>
