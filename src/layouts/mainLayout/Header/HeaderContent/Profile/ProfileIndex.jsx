@@ -120,11 +120,11 @@ const Profile = () => {
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar
-            alt={user.email}
-            src={user.picture}
+            alt={user?.email}
+            src={user?.picture}
             sx={{ width: 32, height: 32 }}
           />
-          <Typography variant="subtitle1"> {user.email}</Typography>
+          <Typography variant="subtitle1"> {user?.email}</Typography>
         </Stack>
       </ButtonBase>
       <Popper
@@ -179,7 +179,9 @@ const Profile = () => {
                               sx={{ width: 32, height: 32 }}
                             />
                             <Stack>
-                              <Typography variant="h6">{user.email}</Typography>
+                              <Typography variant="h6">
+                                {user?.email}
+                              </Typography>
                               <Typography variant="body2" color="textSecondary">
                                 {"admin"}
                               </Typography>

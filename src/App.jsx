@@ -4,6 +4,7 @@ import MainLayout from "@/layouts/mainLayout/MainLayout";
 import Dashboard from "@/pages/Dashboard";
 import DemoPage from "@/pages/DemoPage";
 import SamplePage from "@/pages/SamplePage";
+import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
@@ -14,7 +15,10 @@ import DataObjects from "./pages/management/Data/DataObjects";
 import UserEditCreatePage from "./pages/management/users/UserEditCreatePage";
 import Users from "./pages/management/users/Users";
 
+import Loader from "@/components/Loader";
 const App = () => {
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+
   const dispatch = useDispatch();
 
   const token = useMemo(() => {
@@ -26,6 +30,15 @@ const App = () => {
       dispatch(setAuthToken(token));
     }
   }, [token, dispatch]);
+
+  useMemo(() => {
+    if (!isAuthenticated && !isLoading) {
+      loginWithRedirect();
+    }
+  }, [isAuthenticated, isLoading]);
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <>
       <Routes>
